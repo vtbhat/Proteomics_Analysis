@@ -1,14 +1,16 @@
 library(limma)
 library(tidyr)
+library(ggplot2)
+library(ggpubr)
 
 #---Analysis of long COVID
 
 #---Read in the OLINK NPX file
-olinkdata <- read.csv("IRIS_LongCOVID_olink_data.csv",
+olinkdata_og <- read.csv("IRIS_LongCOVID_olink_data.csv",
                       h = TRUE)
 
 #---Subset to retain samples collected at the 3-month timepoint
-olinkdata <- subset(olinkdata, olinkdata$timing_month=="3 months")
+olinkdata <- subset(olinkdata_og, olinkdata$timing_month=="3 months")
 olinkdata <- subset(olinkdata, olinkdata$Sex=="Male")
 
 #---Create a sample table
@@ -31,4 +33,18 @@ design <- model.matrix(~ long_covid, sampleTable)
 fit <- lmFit(npx_data, design)
 fit <- eBayes(fit, trend=TRUE)
 res_top <- topTable(fit, coef=ncol(design), genelist=fit$genes,number=Inf,adjust="BH")
+print(subset(res_top, res_top$P.Value < 0.05, (select=c("logFC", "P.Value", "adj.P.Val"))))
+
+#---T-test to compare LAP TGF-beta expression in recovered vs long COVID during Acute Infection
+olinkdata_acute <- subset(olinkdata_og, olinkdata$timing_month=="Acute")
+olinkdata_acute <- subset(olinkdata, olinkdata$Sex=="Male")
+
+tgfbeta <- subset(olinkdata_acute, olinkdata$Assay=="LAP TGF-beta-1")
+tgfbeta$long_covid <- gsub("1", "Long COVID", tgfbeta$long_covid)
+tgfbeta$long_covid <- gsub("0", "Recovered", tgfbeta$long_covid)
+tgfbeta$long_covid <- as.factor(tgfbeta$long_covid)
+ggplot(tgfbeta, aes(x = long_covid, y = NPX, fill = long_covid))  +
+  geom_boxplot(outlier.shape = NA) + ggtitle("LAP TGF-beta-1 levels during Acute infection: Long COVID vs Recovered") + geom_jitter(width=0.2)  +
+  theme_classic() + scale_fill_manual(values = c("#F69C9E", "lightblue")) +
+  ylab("NPX") + stat_compare_means(aes(label = paste0(after_stat(method), " p = ", after_stat(p.format))))
 
