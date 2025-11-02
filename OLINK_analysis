@@ -1,0 +1,34 @@
+library(limma)
+library(tidyr)
+
+#---Analysis of long COVID
+
+#---Read in the OLINK NPX file
+olinkdata <- read.csv("IRIS_LongCOVID_olink_data.csv",
+                      h = TRUE)
+
+#---Subset to retain samples collected at the 3-month timepoint
+olinkdata <- subset(olinkdata, olinkdata$timing_month=="3 months")
+olinkdata <- subset(olinkdata, olinkdata$Sex=="Male")
+
+#---Create a sample table
+olinkdata$timing_month <- gsub(" months", "_months", olinkdata$timing_month)
+olinkdata$sampleID <- paste0(olinkdata$IRIS_number, "-", olinkdata$timing_month)
+sampleTable <- subset(olinkdata, select=c("Sex", "IRIS_number", "long_covid"))
+sampleTable <- sampleTable[!duplicated(sampleTable), ]
+sampleTable$long_covid <- as.factor(sampleTable$long_covid)
+
+#--Create a table with protein expression data
+npx_data <- subset(olinkdata, select=c("Assay", "NPX", "IRIS_number"))
+npx_data <- pivot_wider(npx_data, names_from=IRIS_number, values_from=NPX)
+npx_data <- as.data.frame(npx_data)
+rownames(npx_data) <- npx_data$Assay
+npx_data$Assay <- NULL
+npx_data <- as.matrix(npx_data)
+
+#---Limma model to assess differential abundance
+design <- model.matrix(~ long_covid, sampleTable)
+fit <- lmFit(npx_data, design)
+fit <- eBayes(fit, trend=TRUE)
+res_top <- topTable(fit, coef=ncol(design), genelist=fit$genes,number=Inf,adjust="BH")
+
