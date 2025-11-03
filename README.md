@@ -8,7 +8,7 @@ In a paper by [Hamlin et al.,](https://pmc.ncbi.nlm.nih.gov/articles/PMC12148066
 Table of all genes with p-value < 0.05. None of the genes passed the same Benjamini-Hochberg FDR threshold due to small sample size, but 11 genes had p-value < 0.05.
 | Gene            | logFC   | P.Value  | adj.P.Val |
 |-----------------|---------|----------|-----------|
-| IL13        | -0.907  | 0.000    | 0.061     |
+| IL13        | -0.907  | 0.0003    | 0.061     |
 | EIF5A       | -0.872  | 0.001    | 0.065     |
 | KPNA1       | -0.868  | 0.002    | 0.122     |
 | MCP-4       | -0.697  | 0.018    | 0.765     |
