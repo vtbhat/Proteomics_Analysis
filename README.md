@@ -5,7 +5,7 @@ Analysis scripts for different types of proteomics platforms, including mass spe
 Analysis script: OLINK_analysis.R
 In a paper by [Hamlin et al.,](https://pmc.ncbi.nlm.nih.gov/articles/PMC12148066/#S2), the authros analyzed sex-specific differences in long COVID development using proteomic data assayed using the OLINK Inflammation and Immune Response panels. The data was collected across three timepoints: during acute infection, 3 months after infection, and 12 months after infection. The authors observed that TGF-beta-1 levels (also called LAP TGF-beta-1) were higher in participants with long COVID after 3 months when compared to individuals who had fully recovered at the same timepoint (unadjusted p-value < 0.05). Here, I implement a limma model to reproduce the same results:
 
-Table of all genes with p-value < 0.05. None of the genes passed the same Benjamini-Hochberg FDR threshold due to small sample size, but 
+Table of all genes with p-value < 0.05. None of the genes passed the same Benjamini-Hochberg FDR threshold due to small sample size, but 11 genes had p-value < 0.05.
 | Gene            | logFC   | P.Value  | adj.P.Val |
 |-----------------|---------|----------|-----------|
 | IL13        | -0.907  | 0.000    | 0.061     |
