@@ -10,7 +10,7 @@ olinkdata_og <- read.csv("IRIS_LongCOVID_olink_data.csv",
                       h = TRUE)
 
 #---Subset to retain samples collected at the 3-month timepoint
-olinkdata <- subset(olinkdata_og, olinkdata$timing_month=="3 months")
+olinkdata <- subset(olinkdata_og, olinkdata_og$timing_month=="3 months")
 olinkdata <- subset(olinkdata, olinkdata$Sex=="Male")
 
 #---Create a sample table
@@ -36,7 +36,7 @@ res_top <- topTable(fit, coef=ncol(design), genelist=fit$genes,number=Inf,adjust
 print(subset(res_top, res_top$P.Value < 0.05, (select=c("logFC", "P.Value", "adj.P.Val"))))
 
 #---T-test to compare LAP TGF-beta expression in recovered vs long COVID during Acute Infection
-olinkdata_acute <- subset(olinkdata_og, olinkdata$timing_month=="Acute")
+olinkdata_acute <- subset(olinkdata_og, olinkdata_og$timing_month=="Acute")
 olinkdata_acute <- subset(olinkdata, olinkdata$Sex=="Male")
 
 tgfbeta <- subset(olinkdata_acute, olinkdata$Assay=="LAP TGF-beta-1")
