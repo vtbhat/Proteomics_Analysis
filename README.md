@@ -23,3 +23,5 @@ Table of all genes with p-value < 0.05. None of the genes passed the same Benjam
 Furthermore, the authors found that the TGF-beta=1 levels were found to be significantly different during acute infection between participants who eventually recovered vs those who went on to develop long COVID (Wilcoxon p < 0.05). I've reproduced the same plot here:
 
 <img width="1021" height="470" alt="image" src="https://github.com/user-attachments/assets/49af55fd-f424-4f82-91af-8f8860cc154a" />
+
+### Project 2: Longitudinal Analysis of Severe COVID-19
