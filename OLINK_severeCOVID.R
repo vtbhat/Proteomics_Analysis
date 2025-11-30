@@ -1,5 +1,8 @@
 library(tidyr)
 library(OlinkAnalyze)
+library(ComplexHeatmap)
+library(circlize)
+
 #---Read in the OLINK NPX file
 olinkdata_npx <- read.table("/MGH_COVID_OLINK_NPX.txt",
                          sep = ";", h = TRUE)
@@ -49,3 +52,38 @@ for(i in 1:length(proteins))
 }
 results_lm$pvalue <- as.numeric(results_lm$pvalue)
 results_lm$FDR <- p.adjust(results_lm$pvalue, "BH")
+
+#---Figure: Heatmap of top 200 differentially expressed proteins
+results_lm <- results_lm[order(results_lm$FDR), ]
+top200proteins <- results_lm$proteins[1:200]
+top200npx_matrix <- olinkdata_npx
+top200npx_matrix <- as.data.frame(top200npx_matrix)
+rownames(top200npx_matrix) <- top200npx_matrix$subject_id
+top200npx_matrix$subject_id <- NULL
+top200npx_matrix <- as.matrix(subset(top200npx_matrix, select=top200proteins))
+top200npx_matrix <- scale(top200npx_matrix)
+top200npx_matrixt <- t(top200npx_matrix)
+colnames(top200npx_matrixt) <- as.vector(olinkdata_npx$subject_id)
+top200npx_matrixt <- as.data.frame(top200npx_matrixt)
+top200npx_matrixt <- as.matrix(top200npx_matrixt)
+
+#---Truncate values 4 or 5 SDs above mean
+top200npx_matrixt <- pmax(pmin(top200npx_matrixt, 4), -4)
+
+heatmap_ann <- subset(clinical, select=c("subject_id", "COVID"))
+df_meta <- heatmap_ann[match(colnames(top200npx_matrixt), heatmap_ann$subject_id), ]
+
+df_meta$COVID[df_meta$COVID==1] <- "COVID positive"
+df_meta$COVID[df_meta$COVID==0] <- "COVID negative"
+
+ha_col <- HeatmapAnnotation(
+  COVID = df_meta$COVID,
+  col = list(
+    COVID = c("COVID negative" = "blue", "COVID positive" = "red")   # color mapping
+  )
+)
+
+#---Heatmap
+Heatmap(top200npx_matrixt, top_annotation = ha_col, 
+        heatmap_legend_param=list(title="Z Scores"), show_row_names=FALSE, 
+        show_column_names = FALSE)
