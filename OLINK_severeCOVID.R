@@ -2,6 +2,8 @@ library(tidyr)
 library(OlinkAnalyze)
 library(ComplexHeatmap)
 library(circlize)
+library(ggplot2)
+library(ggrepel)
 
 #---Read in the OLINK NPX file
 olinkdata_npx <- read.table("/MGH_COVID_OLINK_NPX.txt",
@@ -87,3 +89,43 @@ ha_col <- HeatmapAnnotation(
 Heatmap(top200npx_matrixt, top_annotation = ha_col, 
         heatmap_legend_param=list(title="Z Scores"), show_row_names=FALSE, 
         show_column_names = FALSE)
+
+#---Volcano Plot
+res_volcano <- results_lm
+res_volcano$DiffExpressed <- "Not Significant"
+for(i in 1:nrow(res_volcano))
+{
+  if(res_volcano$npx_diff[i]<(0) && res_volcano$FDR[i]<0.05)
+  {
+    res_volcano$DiffExpressed[i] <- "Significant"
+  }
+  else if(res_volcano$npx_diff[i]>(0) && res_volcano$FDR[i]<0.05)
+  {
+    res_volcano$DiffExpressed[i] <- "Significant"
+  }
+  
+}
+
+for(i in 1:nrow(res_volcano))
+{
+  if(abs(res_volcano$pvalue[i])>(2.5e-10))
+  {res_volcano$proteins[i] <- NA}
+  
+}
+for(i in 1:nrow(res_volcano))
+{
+  if(res_volcano$DiffExpressed[i]=="Not Significant")
+  {res_volcano$proteins[i] <- NA}
+  
+}
+
+#--Plotting
+ggplot(data=res_volcano, aes(x=npx_diff, y=-log10(pvalue), col=DiffExpressed, label=proteins)) + 
+  scale_color_manual(breaks = c("Significant", "Not Significant"),
+    values=c("#01016f", "grey"),name="Differential Expression")+
+  theme_minimal() + geom_point() + 
+  geom_text_repel() + xlim(-3, 3) + 
+  xlab("log2FC") + 
+  theme(plot.title = element_text(hjust = 0.5), panel.grid.minor = element_blank(), 
+        panel.grid.major=element_blank(),
+        axis.line = element_line(colour = "black"))
