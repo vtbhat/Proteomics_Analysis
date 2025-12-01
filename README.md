@@ -3,7 +3,7 @@ Analysis scripts for different types of proteomics platforms, including mass spe
 
 ### Project 1: Longitudinal Analysis of Severe COVID-19
 Analysis script: OLINK_severeCOVID.R\
-In a paper by [Filbin et al.,](https://pmc.ncbi.nlm.nih.gov/articles/PMC8091031/#sec2), the authors investigated 1463 proteins longitudinally across 306 COVID-19 patients and 78 symptomatic controls. The authors identified multiple protein signatures associated with the severity of COVID-19. The data can be downloaded from [the OLINK website](https://info.olink.com/broad-covid-study-overview-download); the NPX values are slightly different from those reported in the paper because NPX cprrection factors are no longer used. Here, I implement a linear model to reproduce the results from Figure 1 of the paper:
+In a paper by [Filbin et al.,](https://pmc.ncbi.nlm.nih.gov/articles/PMC8091031/#sec2), the authors investigated 1463 proteins longitudinally across 306 COVID-19 patients and 78 symptomatic controls. The authors identified multiple protein signatures associated with the severity of COVID-19. The data can be downloaded from [the OLINK website](https://info.olink.com/broad-covid-study-overview-download); the NPX values are slightly different from those reported in the paper because NPX correction factors are no longer used. Here, I implement a linear model to reproduce the results from Figure 1 of the paper:
 
 <ins>Heatmap of the top 200 differentially expressed proteins</ins>
 
