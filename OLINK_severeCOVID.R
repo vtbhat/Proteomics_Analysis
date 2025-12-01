@@ -125,7 +125,7 @@ ggplot(data=res_volcano, aes(x=npx_diff, y=-log10(pvalue), col=DiffExpressed, la
     values=c("#01016f", "grey"),name="Differential Expression")+
   theme_minimal() + geom_point() + 
   geom_text_repel() + xlim(-3, 3) + 
-  xlab("log2FC") + 
+  xlab("NPX difference (day 0)") + 
   theme(plot.title = element_text(hjust = 0.5), panel.grid.minor = element_blank(), 
         panel.grid.major=element_blank(),
         axis.line = element_line(colour = "black"))
