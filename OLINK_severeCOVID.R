@@ -129,3 +129,20 @@ ggplot(data=res_volcano, aes(x=npx_diff, y=-log10(pvalue), col=DiffExpressed, la
   theme(plot.title = element_text(hjust = 0.5), panel.grid.minor = element_blank(), 
         panel.grid.major=element_blank(),
         axis.line = element_line(colour = "black"))
+
+#---Boxplot of Selected Viral and IFN Proteins
+boxplot_pro <- subset(merged_df, select=c("subject_id", "COVID", "IFNG", "DDX58",
+                 "IFNL1","CXCL10", "CXCL11", "CCL7", "CCL16", "CCL24"))
+boxplot_pro <- boxplot_pro %>% pivot_longer(
+  cols = -c(subject_id, COVID), 
+  names_to = "protein",
+  values_to = "NPX"
+)
+boxplot_pro$COVID <- as.character(boxplot_pro$COVID)
+boxplot_pro$COVID[boxplot_pro$COVID==1] <- "COVID+"
+boxplot_pro$COVID[boxplot_pro$COVID==0] <- "COVID-"
+ggplot(boxplot_pro, aes(x = COVID, y = NPX, fill = COVID)) +
+  geom_boxplot() + geom_jitter() + ggtitle("Boxplots of select differentially expressed viral response and interferon pathway proteins")+
+  theme_minimal() + scale_fill_manual(values = c("#4B878BFF", "red"))+
+  facet_wrap(~protein, nrow=2) + theme(strip.text.x = element_text(size = 11, 
+                                  color="white", face="bold")) +theme(strip.background =element_rect(fill="#0818a8"))
