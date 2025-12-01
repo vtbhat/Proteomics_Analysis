@@ -3,6 +3,7 @@ Analysis scripts for different types of proteomics platforms, including mass spe
 
 ### Project 1: Longitudinal Analysis of Severe COVID-19
 Analysis script: OLINK_severeCOVID.R
+
 In a paper by [Filbin et al.,](https://pmc.ncbi.nlm.nih.gov/articles/PMC8091031/#sec2), the authors investigated 1463 proteins longitudinally across 306 COVID-19 patients and 78 symptomatic controls. The authors identified multiple protein signatures associated with the severity of COVID-19. Here, I implement a linear model to reproduce the results from Figure 1 of the paper:
 
 Heatmap of the top 200 differentially expressed proteins
@@ -21,6 +22,7 @@ As shown in the paper, proteins associated with viral response and inflammatory 
 
 ### Project 2: Analysis of Long COVID vs Recovered Samples at Multiple Timepoints
 Analysis script: OLINK_analysis.R
+
 In a paper by [Hamlin et al.,](https://pmc.ncbi.nlm.nih.gov/articles/PMC12148066/#S2), the authors analyzed sex-specific differences in long COVID development using proteomic data assayed using the OLINK Inflammation and Immune Response panels. The data was collected across three timepoints: during acute infection, 3 months after infection, and 12 months after infection. The authors observed that TGF-beta-1 levels (also called LAP TGF-beta-1) were higher in participants with long COVID after 3 months when compared to individuals who had fully recovered at the same timepoint (unadjusted p-value < 0.05). Here, I implement a limma model to reproduce the same results:
 
 Table of all genes with p-value < 0.05. None of the genes passed the same Benjamini-Hochberg FDR threshold due to small sample size, but 11 genes had p-value < 0.05.
