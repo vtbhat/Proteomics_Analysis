@@ -7,12 +7,12 @@ In a paper by [Filbin et al.,](https://pmc.ncbi.nlm.nih.gov/articles/PMC8091031/
 
 <ins>Heatmap of the top 200 differentially expressed proteins</ins>
 
-<img width="765" height="547" alt="image" src="https://github.com/user-attachments/assets/73068591-9ce1-4ff0-81d5-0608b6dfbac7" />
+<img width="765" height="510" alt="image" src="https://github.com/user-attachments/assets/73068591-9ce1-4ff0-81d5-0608b6dfbac7" />
 
 
 <ins>Volcano Plot of Differentially Expressed Proteins</ins>
 
-<img width="1037" height="591" alt="image" src="https://github.com/user-attachments/assets/2473fbe6-4cbd-4900-b3f6-cc8fb61b5ef3" />
+<img width="900" height="581" alt="image" src="https://github.com/user-attachments/assets/2473fbe6-4cbd-4900-b3f6-cc8fb61b5ef3" />
 
 
 <ins>Boxplot of Selected Differentially Expressed Proteins (Viral and Interferon Signaling Pathways)</ins>
